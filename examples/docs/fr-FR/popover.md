@@ -115,11 +115,11 @@ Vous pouvez aussi imbriquer des opérations. Procéder ainsi est plus léger que
 <el-popover
   placement="top"
   width="160"
-  v-model="visible2">
+  v-model="visible">
   <p>Voulez-vous vraiment supprimer ceci?</p>
   <div style="text-align: right; margin: 0">
-    <el-button size="mini" type="text" @click="visible2 = false">Annuler</el-button>
-    <el-button type="primary" size="mini" @click="visible2 = false">Confirmer</el-button>
+    <el-button size="mini" type="text" @click="visible = false">Annuler</el-button>
+    <el-button type="primary" size="mini" @click="visible = false">Confirmer</el-button>
   </div>
   <el-button slot="reference">Supprimer</el-button>
 </el-popover>
@@ -128,7 +128,7 @@ Vous pouvez aussi imbriquer des opérations. Procéder ainsi est plus léger que
   export default {
     data() {
       return {
-        visible2: false,
+        visible: false,
       };
     }
   }
@@ -150,9 +150,11 @@ Vous pouvez aussi imbriquer des opérations. Procéder ainsi est plus léger que
 | offset | Décalage du popover. | number | — |  0 |
 | transition | Animation de transition du popover. | string | — | el-fade-in-linear |
 | visible-arrow | Si une flèche doit être affichée ou non. Pour plus d'informations, référez-vous à [Vue-popper](https://github.com/element-component/vue-popper). | boolean | — | true |
-| popper-options | Paramètres pour [popper.js](https://popper.js.org/documentation.html). | object | Référez-vous à [popper.js](https://popper.js.org/documentation.html). | `{ boundariesElement: 'body', gpuAcceleration: false }` |
+| popper-options | Paramètres pour [popper.js](https://popper.js.org/docs/v2/). | object | Référez-vous à [popper.js](https://popper.js.org/docs/v2/). | `{ boundariesElement: 'body', gpuAcceleration: false }` |
 | popper-class | Classe du popover. | string | — | — |
 | open-delay | Délai d'affichage, lorsque `trigger` est 'hover', en millisecondes. | number | — | — |
+| close-delay | delay before disappearing when `trigger` is hover, in milliseconds | number | — | 200 |
+| tabindex   | [tabindex](https://developer.mozilla.org/fr/docs/Web/HTML/Attributs_universels/tabindex) de Popover | number | — | 0 |
 
 ### Slot
 

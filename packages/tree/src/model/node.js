@@ -1,5 +1,6 @@
 import objectAssign from 'element-ui/src/utils/merge';
 import { markNodeData, NODE_KEY } from './util';
+import { arrayFindIndex } from 'element-ui/src/utils/util';
 
 export const getChildState = node => {
   let all = true;
@@ -22,7 +23,7 @@ export const getChildState = node => {
 };
 
 const reInitChecked = function(node) {
-  if (node.childNodes.length === 0) return;
+  if (node.childNodes.length === 0 || node.loading) return;
 
   const {all, none, half} = getChildState(node.childNodes);
   if (all) {
@@ -71,6 +72,7 @@ export default class Node {
     this.expanded = false;
     this.parent = null;
     this.visible = true;
+    this.isCurrent = false;
 
     for (let name in options) {
       if (options.hasOwnProperty(name)) {
@@ -123,6 +125,7 @@ export default class Node {
 
     if (key && store.currentNodeKey !== undefined && this.key === store.currentNodeKey) {
       store.currentNode = this;
+      store.currentNode.isCurrent = true;
     }
 
     if (store.lazy) {
@@ -217,7 +220,7 @@ export default class Node {
 
     if (!(child instanceof Node)) {
       if (!batch) {
-        const children = this.getChildren(true);
+        const children = this.getChildren(true) || [];
         if (children.indexOf(child.data) === -1) {
           if (typeof index === 'undefined' || index < 0) {
             children.push(child.data);
@@ -433,8 +436,10 @@ export default class Node {
     const newNodes = [];
 
     newData.forEach((item, index) => {
-      if (item[NODE_KEY]) {
-        newDataMap[item[NODE_KEY]] = { index, data: item };
+      const key = item[NODE_KEY];
+      const isNodeExists = !!key && arrayFindIndex(oldData, data => data[NODE_KEY] === key) >= 0;
+      if (isNodeExists) {
+        newDataMap[key] = { index, data: item };
       } else {
         newNodes.push({ index, data: item });
       }
@@ -458,14 +463,12 @@ export default class Node {
       this.loading = true;
 
       const resolve = (children) => {
-        this.loaded = true;
-        this.loading = false;
         this.childNodes = [];
 
         this.doCreateChildren(children, defaultProps);
-
+        this.loaded = true;
+        this.loading = false;
         this.updateLeafState();
-        reInitChecked(this);
         if (callback) {
           callback.call(this, children);
         }

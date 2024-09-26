@@ -26,7 +26,7 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
       v-model="value2"
       type="datetime"
       placeholder="Select date and time"
-      :picker-options="pickerOptions1">
+      :picker-options="pickerOptions">
     </el-date-picker>
   </div>
   <div class="block">
@@ -44,7 +44,7 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
   export default {
     data() {
       return {
-        pickerOptions1: {
+        pickerOptions: {
           shortcuts: [{
             text: 'Today',
             onClick(picker) {
@@ -85,7 +85,7 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
   <div class="block">
     <span class="demonstration">Default</span>
     <el-date-picker
-      v-model="value4"
+      v-model="value1"
       type="datetimerange"
       range-separator="To"
       start-placeholder="Start date"
@@ -95,9 +95,9 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
   <div class="block">
     <span class="demonstration">With shortcuts</span>
     <el-date-picker
-      v-model="value5"
+      v-model="value2"
       type="datetimerange"
-      :picker-options="pickerOptions2"
+      :picker-options="pickerOptions"
       range-separator="To"
       start-placeholder="Start date"
       end-placeholder="End date"
@@ -110,7 +110,7 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
   export default {
     data() {
       return {
-        pickerOptions2: {
+        pickerOptions: {
           shortcuts: [{
             text: 'Last week',
             onClick(picker) {
@@ -137,8 +137,8 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
             }
           }]
         },
-        value4: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
-        value5: ''
+        value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+        value2: ''
       };
     }
   };
@@ -154,7 +154,7 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
   <div class="block">
     <span class="demonstration">Start date time 12:00:00</span>
     <el-date-picker
-      v-model="value6"
+      v-model="value1"
       type="datetimerange"
       start-placeholder="Start Date"
       end-placeholder="End Date"
@@ -164,7 +164,7 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
   <div class="block">
     <span class="demonstration">Start date time 12:00:00, end date time 08:00:00</span>
     <el-date-picker
-      v-model="value7"
+      v-model="value2"
       type="datetimerange"
       align="right"
       start-placeholder="Start Date"
@@ -178,8 +178,8 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
   export default {
     data() {
       return {
-        value6: '',
-        value7: ''
+        value1: '',
+        value2: ''
       };
     }
   };
@@ -210,7 +210,7 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
 | default-time | the default time value after picking a date | non-range: string / range: string[] | non-range: a string like `12:00:00`, range: array of two strings, and the first item is for the start date and second for the end date. `00:00:00` will be used if not specified | — |
 | value-format | optional, format of binding value. If not specified, the binding value will be a Date object | string | see [date formats](#/en-US/component/date-picker#date-formats) | — |
 | name | same as `name` in native input | string | — | — |
-| unlink-panels | unllink two date-panels in range-picker | boolean | — | false |
+| unlink-panels | unlink two date-panels in range-picker | boolean | — | false |
 | prefix-icon | Custom prefix icon class | string | — | el-icon-date |
 | clear-icon | Custom clear icon class | string | — | el-icon-circle-close |
 
@@ -219,6 +219,7 @@ DateTimePicker is derived from DatePicker and TimePicker. For a more detailed ex
 |---------- |-------------- |---------- |--------------------------------  |-------- |
 | shortcuts | a { text, onClick } object array to set shortcut options, check the table below | object[] | — | — |
 | disabledDate | a function determining if a date is disabled with that date as its parameter. Should return a Boolean | function | — | — |
+| cellClassName | set custom className | Function(Date) | — | — |
 | firstDayOfWeek | first day of week | Number | 1 to 7 | 7 |
 
 ### shortcuts

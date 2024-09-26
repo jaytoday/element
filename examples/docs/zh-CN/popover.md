@@ -112,11 +112,11 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
 <el-popover
   placement="top"
   width="160"
-  v-model="visible2">
+  v-model="visible">
   <p>这是一段内容这是一段内容确定删除吗？</p>
   <div style="text-align: right; margin: 0">
-    <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
-    <el-button type="primary" size="mini" @click="visible2 = false">确定</el-button>
+    <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+    <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
   </div>
   <el-button slot="reference">删除</el-button>
 </el-popover>
@@ -125,7 +125,7 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
   export default {
     data() {
       return {
-        visible2: false,
+        visible: false,
       };
     }
   }
@@ -146,9 +146,11 @@ Popover 的属性与 Tooltip 很类似，它们都是基于`Vue-popper`开发的
 |  offset        |  出现位置的偏移量  | Number           | — |  0 |
 |  transition     |  定义渐变动画      | String             | — | fade-in-linear |
 |  visible-arrow   |  是否显示 Tooltip 箭头，更多参数可见[Vue-popper](https://github.com/element-component/vue-popper) | Boolean | — | true |
-|  popper-options        | [popper.js](https://popper.js.org/documentation.html) 的参数 | Object            | 参考 [popper.js](https://popper.js.org/documentation.html) 文档 | `{ boundariesElement: 'body', gpuAcceleration: false }` |
+|  popper-options        | [popper.js](https://popper.js.org/docs/v2/) 的参数 | Object            | 参考 [popper.js](https://popper.js.org/docs/v2/) 文档 | `{ boundariesElement: 'body', gpuAcceleration: false }` |
 | popper-class | 为 popper 添加类名 | String | — | — |
 | open-delay | 触发方式为 hover 时的显示延迟，单位为毫秒 | Number | — | — |
+| close-delay | 触发方式为 hover 时的隐藏延迟，单位为毫秒 | number | — | 200 |
+| tabindex   | Popover 组件的 [tabindex](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) | number | — | 0 |
 
 ### Slot
 | 参数 | 说明 |

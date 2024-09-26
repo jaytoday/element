@@ -3,6 +3,21 @@
     height: 80px;
   }
 
+  #v3-banner {
+    background-color: #409EFF;
+    min-height: 30px;
+    padding: 5px 60px;
+    z-index: 19;
+    box-sizing: border-box;
+    text-align: center;
+    color: #eee;
+  }
+
+  #v3-banner a {
+    color: #FFF;
+    font-weight: bold;
+  }
+
   .header {
     height: 80px;
     background-color: #fff;
@@ -97,11 +112,11 @@
       list-style: none;
       position: relative;
       cursor: pointer;
-    
+
       &.nav-algolia-search {
         cursor: default;
       }
-    
+
       &.lang-item,
       &:last-child {
         cursor: default;
@@ -195,7 +210,7 @@
       }
     }
   }
-  
+
   .nav-dropdown-list {
     width: auto;
   }
@@ -215,7 +230,7 @@
         &:last-child {
           margin-left: 10px;
         }
-         
+
         a {
           padding: 0 5px;
         }
@@ -239,11 +254,11 @@
 
         &.lang-item {
           height: 100%;
-         
+
           .nav-lang {
             display: flex;
             align-items: center;
-            
+
             span {
               padding-bottom: 0;
             }
@@ -267,6 +282,18 @@
 </style>
 <template>
   <div class="headerWrapper">
+    <div id="v3-banner" v-if="isHome">
+      <template v-if="lang === 'zh-CN'">
+        您正在浏览基于 Vue 2.x 的文档;
+        <a href="https://element-plus.org/#/zh-CN">点击查看 Vue 3.x 版本。</a>
+        饿了么开源了自研多端框架 MorJS，
+        <a href="https://github.com/eleme/morjs">欢迎点击查看或试用 👏🏻</a>
+      </template>
+      <template v-else>
+        You’re browsing the documentation of Element UI for Vue 2.x version.
+        <a href="https://element-plus.org">Click here</a> for Vue 3.x version
+      </template>
+    </div>
     <header class="header" ref="header">
       <div class="container">
         <h1><router-link :to="`/${ lang }`">
@@ -299,6 +326,14 @@
             <router-link
               active-class="active"
               :to="`/${ lang }/component`">{{ langConfig.components }}
+            </router-link>
+          </li>
+          <li
+            class="nav-item nav-item-theme"
+          >
+            <router-link
+              active-class="active"
+              :to="`/${ lang }/theme`">{{ langConfig.theme }}
             </router-link>
           </li>
           <li class="nav-item">
@@ -361,12 +396,6 @@
               </el-dropdown-menu>
             </el-dropdown>
           </li>
-          
-          <!--theme picker-->
-          <li class="nav-item nav-theme-switch" v-show="isComponentPage">
-            <theme-configurator :key="lang" v-if="showThemeConfigurator"></theme-configurator>
-            <theme-picker v-else></theme-picker>
-          </li>
         </ul>
       </div>
     </header>
@@ -374,12 +403,12 @@
 </template>
 <script>
   import ThemePicker from './theme-picker.vue';
-  import ThemeConfigurator from './theme-configurator';
   import AlgoliaSearch from './search.vue';
   import compoLang from '../i18n/component.json';
   import Element from 'main/index.js';
-  import { getVars } from './theme-configurator/utils/api.js';
+  import themeLoader from './theme/loader';
   import bus from '../bus';
+  import { ACTION_USER_CONFIG_UPDATE } from './theme/constant.js';
 
   const { version } = Element;
 
@@ -396,14 +425,14 @@
           'en-US': 'English',
           'es': 'Español',
           'fr-FR': 'Français'
-        },
-        showThemeConfigurator: false
+        }
       };
     },
 
+    mixins: [themeLoader],
+
     components: {
       ThemePicker,
-      ThemeConfigurator,
       AlgoliaSearch
     },
 
@@ -419,21 +448,22 @@
       },
       isComponentPage() {
         return /^component/.test(this.$route.name);
+      },
+      isHome() {
+        return /^home/.test(this.$route.name);
       }
     },
     mounted() {
-      const host = location.hostname;
-      this.showThemeConfigurator = host.match('localhost') || host.match('elenet');
-      if (!this.showThemeConfigurator) {
-        getVars()
-          .then(() => {
-            this.showThemeConfigurator = true;
-            ga('send', 'event', 'DocView', 'Inner');
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      }
+      const testInnerImg = new Image();
+      testInnerImg.onload = () => {
+        this.$isEle = true;
+        ga('send', 'event', 'DocView', 'Ali', 'Inner');
+      };
+      testInnerImg.onerror = (err) => {
+        ga('send', 'event', 'DocView', 'Ali', 'Outer');
+        console.error(err);
+      };
+      testInnerImg.src = `https://private-alipayobjects.alipay.com/alipay-rmsdeploy-image/rmsportal/VmvVUItLdPNqKlNGuRHi.png?t=${Date.now()}`;
     },
     methods: {
       switchVersion(version) {
@@ -470,7 +500,7 @@
       xhr.open('GET', '/versions.json');
       xhr.send();
       let primaryLast = '#409EFF';
-      bus.$on('user-theme-config-update', (val) => {
+      bus.$on(ACTION_USER_CONFIG_UPDATE, (val) => {
         let primaryColor = val.global['$--color-primary'];
         if (!primaryColor) primaryColor = '#409EFF';
         const base64svg = 'data:image/svg+xml;base64,';

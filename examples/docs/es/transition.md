@@ -1,6 +1,6 @@
 ## Transiciones incorporadas
 
-Puede usar directamente las transiciones incorporadas en Element. Antes de hacerlo, por favor lea la [documentación](https://vuejs.org/v2/api/#transition).
+Puede usar directamente las transiciones incorporadas en Element. Antes de hacerlo, por favor lea la [documentación](https://v2.vuejs.org/v2/api/#transition).
 
 ### Fade
 
@@ -99,6 +99,7 @@ Puede usar directamente las transiciones incorporadas en Element. Antes de hacer
 ### Colapsado
 Para efectos de colapsado usar el componente `el-collapse-transition`.
 :::demo
+
 ```html
 <template>
   <div>
@@ -140,7 +141,7 @@ Para efectos de colapsado usar el componente `el-collapse-transition`.
 ```
 :::
 
-### On demand
+### Bajo demanda
 
 ```js
 // fade/zoom
